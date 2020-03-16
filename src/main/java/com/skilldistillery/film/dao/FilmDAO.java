@@ -12,4 +12,10 @@ public interface FilmDAO {
   public List<Film> findFilmByActorId(int actorId);
   public List<Film> findFilmByKeywords(String keyword);
   public String getLanguageOfFilm(int filmId);
+  public void addFilm(Film film);
+  public void updateFilm(Film film);
+  public boolean deleteFilm(int filmId);
+  public String getFilmCategory (int filmId);
+  List<String> getFilmInventoryStatus(int filmId);
+  
 }

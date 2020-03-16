@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<!-- <link
+	href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css"
+	rel="stylesheet" id="bootstrap-css">
+<link rel="stylesheet" href="appCreate.css" />
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet"
+	href="https://use.fontawesome.com/releases/v5.1.0/css/all.css"
+	integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt"
+	crossorigin="anonymous">
+<link rel="stylesheet"
+	href="https://use.fontawesome.com/releases/v5.1.0/css/all.css"
+	integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt"
+	crossorigin="anonymous">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+<title>Add Film</title>
+</head>
+<body>
+
+	<div class="spaceBar">
+		<br> <br>
+	</div>
+	<div class="topBar">
+		<a href="index.html" class="fas fa-home" aria-hidden="true"
+			style="font-size: 30px; color: black"></a>
+
+		<h3>ADD YOUR FILM !</h3>
+
+		<!-- 		<div class="spaceBar">
+			<br>
+		</div> -->
+		<!-- <form action="add.do" method="POST">
+			Title:<input type="text" name="title"/>
+			<br>Description:<input type="text" name="description"/>
+			<br>Year:<input type="text" name="releaseYear"/>
+			<br>Rental Duration<input type="number" name="rentalDuration"/>
+			<br>Rental Rate<input type="text" name="rentalRate"/> 
+			<br>Length<input type="number" name="length"/>
+			<br> Replacement Cost<input type="text" name="replacementCost"/>
+			<br>Rating:<input type="text" name="rating"/>
+			<br>Special Features:<input type="text" name="specialFeatures"/> 
+			<br>
+			
+
+			<button class="searchButton" type="submit" class="btn btn-primary "
+				value="Search by Id">Submit</button>
+		</form> -->
+
+
+		<form:form action="addFilm.do" method="POST" modelAttribute="film">
+			<form:label path="title">Title:</form:label>
+			<form:input path="title" />
+			<br />
+			<form:label path="description">Description:</form:label>
+			<form:input path="description" />
+			<br />
+			<form:label path="releaseYear">Release year:</form:label>
+			<form:input path="releaseYear" />
+			<form:errors path="releaseYear" />
+			<br />
+			<form:label path="language_id">Language: </form:label>
+			<form:select path="language_id">
+				<form:option value="1">English</form:option>
+				<form:option value="2">Italian</form:option>
+				<form:option value="3">Japanese</form:option>
+				<form:option value="4">Mandarin</form:option>
+				<form:option value="5">French</form:option>
+				<form:option value="6">German</form:option>
+			</form:select>
+			<br />
+			<form:label path="rentalDuration">Rental duration:</form:label>
+			<form:input path="rentalDuration" />
+			<br />
+			<form:label path="rentalRate">Rental rate:</form:label>
+			<form:input path="rentalRate" />
+			<br />
+			<form:label path="length">Length:</form:label>
+			<form:input path="length" />
+			<br />
+			<form:label path="replacementCost">Replacement Cost:</form:label>
+			<form:input path="replacementCost" />
+			<br />
+			<span>Rating:</span>
+			<form:select path="rating" items="${ratings}" />
+
+			<br />
+			<form:checkboxes path="special_features" items="${specialFeatures}" />
+			<br />
+			<span> <input type="submit" value="Submit" />
+			</span>
+		</form:form>
+
+	</div>
+</body>
+</html>
+

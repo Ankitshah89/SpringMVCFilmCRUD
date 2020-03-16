@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +19,7 @@ public class FilmDAOJdbcImpl implements FilmDAO {
 
 	private static final String user = "student";
 	private static final String pass = "student";
-	private static final String URL = "jdbc:mysql://localhost:3306/sdvid?useSSL=false";
+	private static final String URL = "jdbc:mysql://localhost:3306/sdvid?serverTimezone=UTC";
 	private static Connection conn;
 
 	static {
@@ -172,8 +173,8 @@ public class FilmDAOJdbcImpl implements FilmDAO {
 		try {
 			conn = DriverManager.getConnection(URL, user, pass);
 			PreparedStatement stmt = conn.prepareStatement(sql);
-			stmt.setString(1, "% " + keyword + " %");
-			stmt.setString(2, "% " + keyword + " %");
+			stmt.setString(1, "%" + keyword + "%");
+			stmt.setString(2, "%" + keyword + "%");
 			ResultSet filmResult = stmt.executeQuery();
 
 			while (filmResult.next()) {
@@ -192,7 +193,7 @@ public class FilmDAOJdbcImpl implements FilmDAO {
 				film.setSpecialFeatures(filmResult.getString("special_features"));
 				film.setActorList(findActorsByFilmId(film.getId()));
 				film.setLanguage(getLanguageOfFilm(film.getId()));
-				
+
 				listOfFilms.add(film);
 
 			}
@@ -215,7 +216,7 @@ public class FilmDAOJdbcImpl implements FilmDAO {
 		String sql = "select language.name from film join language on film.language_id=language.id where film.id = ?";
 		String language = "";
 		try {
-			 conn = DriverManager.getConnection(URL, user, pass);
+			conn = DriverManager.getConnection(URL, user, pass);
 
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, filmId);
@@ -232,5 +233,148 @@ public class FilmDAOJdbcImpl implements FilmDAO {
 			e.printStackTrace();
 		}
 		return language;
+	}
+
+	@Override
+	public void addFilm(Film film) {
+		String sql = "INSERT INTO film (title, description, release_year, language_id, rental_duration, rental_rate, "
+				+ "length, replacement_cost, rating, special_features) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		int result = 0;
+		try {
+			conn = DriverManager.getConnection(URL, user, pass);
+
+			PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
+			stmt.setString(1, film.getTitle());
+			stmt.setString(2, film.getDescription());
+			stmt.setInt(3, film.getReleaseYear());
+			stmt.setInt(4, film.getLanguageId());
+			stmt.setDouble(5, film.getRentalDuration());
+			stmt.setDouble(6, film.getRentalRate());
+			stmt.setDouble(7, film.getLength());
+			stmt.setDouble(8, film.getReplacementCost());
+			stmt.setString(9, film.getRating());
+			stmt.setString(10, film.getSpecialFeatures());
+
+			conn.setAutoCommit(false);
+			result = stmt.executeUpdate();
+			if (result == 1) {
+				ResultSet rs = stmt.getGeneratedKeys();
+
+				if (rs.next()) {
+					film.setId(rs.getInt(1));
+					conn.commit();
+
+				}
+
+				rs.close();
+				stmt.close();
+				conn.close();
+
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	@Override
+	public void updateFilm(Film film) {
+		String sql = "UPDATE film SET title = ?, description = ?, release_year = ?, rental_duration = ?, rental_rate = ?, length = ?, replacement_cost = ?, rating = ?, special_features = ? WHERE id = ?";
+		int updateCount = 0;
+		try {
+			conn = DriverManager.getConnection(URL, user, pass);
+
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			conn.setAutoCommit(false);
+			stmt.setString(1, film.getTitle());
+			stmt.setString(2, film.getDescription());
+			stmt.setInt(3, film.getReleaseYear());
+			stmt.setDouble(4, film.getRentalDuration());
+			stmt.setDouble(5, film.getRentalRate());
+			stmt.setDouble(6, film.getLength());
+			stmt.setDouble(7, film.getReplacementCost());
+			stmt.setString(8, film.getRating());
+			stmt.setString(9, film.getSpecialFeatures());
+			stmt.setInt(10, film.getId());
+
+			updateCount = stmt.executeUpdate();
+
+			ResultSet rs = stmt.executeQuery();
+
+			if (updateCount == 1) {
+				conn.commit();
+
+			}
+
+			rs.close();
+			stmt.close();
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	@Override
+	public boolean deleteFilm(int filmId) {
+		String sql = "delete from film where id = ?";
+		int result = 0;
+		try {
+			conn = DriverManager.getConnection(URL, user, pass);
+
+			conn.setAutoCommit(false);
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, filmId);
+			result = stmt.executeUpdate();
+			ResultSet rs = stmt.executeQuery();
+
+			rs.close();
+			conn.commit();
+			stmt.close();
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		if (result == 0) {
+			return false;
+		} else
+			return true;
+
+	}
+
+	@Override
+	public String getFilmCategory(int filmId) {
+		if (filmId <= 0) {
+			return null;
+		}
+		String sql = "SELECT category.name "
+				+ "FROM film JOIN film_category ON film.id = film_category.film_id "
+						  + "JOIN category ON category.id = film_category.category_id "
+				+ "WHERE film.id = ?";
+		Connection conn = null;
+		String category = null;
+		try {
+			conn = DriverManager.getConnection(URL, user, pass);
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, filmId);
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+				category =  rs.getString("category.name");
+			}
+			rs.close();
+			stmt.close();
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return category;
+	} 
+	
+
+	@Override
+	public List<String> getFilmInventoryStatus(int filmId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
