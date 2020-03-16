@@ -70,12 +70,12 @@
 	</form:form>
 	
 	
-	<form action="index.html">
+	<%-- <form action="index.html">
          <button type="submit" class="btn btn-primary "
 			value="Main Menu" action="index.html">
 		Back to Main Menu</a>
 		</button>
-      </form>
+      </form> --%>
 		
 </body>
 </html>

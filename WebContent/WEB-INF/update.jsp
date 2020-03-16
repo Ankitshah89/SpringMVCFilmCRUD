@@ -32,7 +32,7 @@
 	</div>
 </head>
 <body>
-	<form:form action="updateFilm.do" method="GET" modelAttribute="film">
+<form:form action="update.do" method="POST" modelAttribute="film">
 		<input type="hidden" name="id" value="${filmID}">
 		<form:label path="title">Title:</form:label>
 		<form:input path="title" />
@@ -64,7 +64,7 @@
 		<br /> 
 		 --%>
 		
-	<form action="result.jsp">
+	<form action="updatedRecord.jsp">
 		<input type="submit" value="Modify" />
 	</form>
 	</form:form>

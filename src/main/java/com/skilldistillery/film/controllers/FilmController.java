@@ -77,6 +77,8 @@ public class FilmController {
 	
 	@RequestMapping(path = "updateFilm.do", method = RequestMethod.GET, params = "id")
 	public ModelAndView getUpdateInfo(int id) {
+		
+//		boolean result = filmDao.updateFilm(new);
 		ModelAndView mv = new ModelAndView("WEB-INF/update.jsp");
 		mv.addObject("film", new Film());
 		mv.addObject("filmID", id);

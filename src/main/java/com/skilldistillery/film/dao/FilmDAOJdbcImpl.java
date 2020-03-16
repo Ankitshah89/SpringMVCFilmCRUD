@@ -300,14 +300,14 @@ public class FilmDAOJdbcImpl implements FilmDAO {
 
 			updateCount = stmt.executeUpdate();
 
-			ResultSet rs = stmt.executeQuery();
+		
 
 			if (updateCount == 1) {
 				conn.commit();
 
 			}
 
-			rs.close();
+//			rs.close();
 			stmt.close();
 			conn.close();
 		} catch (SQLException e) {
@@ -327,9 +327,7 @@ public class FilmDAOJdbcImpl implements FilmDAO {
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, filmId);
 			result = stmt.executeUpdate();
-			ResultSet rs = stmt.executeQuery();
 
-			rs.close();
 			conn.commit();
 			stmt.close();
 			conn.close();
