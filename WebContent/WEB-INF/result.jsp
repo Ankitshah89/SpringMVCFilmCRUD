@@ -45,6 +45,7 @@
 			
 			<li><strong>${film.title}</strong></li>
 			<br>
+			<li><strong>Film ID: ${film.id}</strong></li>
 			<li>About: ${film.description}</li>
 			<li>Release Year: ${film.releaseYear}</li>
 			<li>Rental Duration: ${film.rentalDuration } days</li>

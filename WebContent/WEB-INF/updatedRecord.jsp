@@ -44,7 +44,7 @@
 					<li>${actor.getFirstName() }${actor.getLastName() }</li>
 				</c:forEach>
 			</ul>
-	
+
 		</c:when>
 	</c:choose>
 	<form action="index.html">

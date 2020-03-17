@@ -56,13 +56,7 @@
 		<form:label path="replacementCost">Replacement Cost:</form:label>
 		<form:input path="replacementCost" />
 		<br />
-		<span>Rating:</span>
-		<form:select path="rating" items="${ratings}" />
-
-		<%--  <br />
-		<form:checkboxes path="specialFeatures" items="${specialFeatures}" />
-		<br /> 
-		 --%>
+		
 		
 	<form action="updatedRecord.jsp">
 		<input type="submit" value="Modify" />
